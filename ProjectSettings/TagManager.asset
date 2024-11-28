@@ -9,6 +9,8 @@ TagManager:
   - Cloud
   - Mushroom
   - Obstacle
+  - TreeTrigger
+  - GrassTrigger
   layers:
   - Default
   - TransparentFX

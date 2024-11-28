@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private TMP_Text _txtCollectedClouds;
     [SerializeField] private TMP_Text _txtPoints;
+
+    [SerializeField] private AudioSource _treeAudioSource;
     
     private float _horizontalMovement;
     private Vector3 _direction;
@@ -40,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _horizontalMovement = Input.GetAxisRaw("Horizontal");
 
-        // Flip player' sprite and change animation
+        // Flip player's sprite and change animation
         if (_horizontalMovement != 0 && _isGrounded)
         {
             _animator.SetBool(IsMoving, true);
@@ -101,6 +104,23 @@ public class PlayerMovement : MonoBehaviour
             _points++;
             _txtPoints.text = $"Points: {_points}";
             Destroy(other.gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {       
+        // Reproduce a special sound when we hit a tree sprite
+        if (other.gameObject.CompareTag("TreeTrigger"))
+        {
+            if (!_treeAudioSource.isPlaying)
+                _treeAudioSource.Play();
+        }
+        
+        // Add two points when we hit a grass sprite
+        if (other.gameObject.CompareTag("GrassTrigger"))
+        {
+            _points += 2;
+            _txtPoints.text = $"Points: {_points}";
         }
     }
 }
